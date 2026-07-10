@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Example lesson with tracking</title>
+  <style>
+    body { font-family: sans-serif; max-width: 720px; margin: 2rem auto; padding: 0 1rem; line-height: 1.6; }
+    section { margin: 3rem 0; padding-top: 1rem; border-top: 1px solid #ddd; }
+    button { padding: 0.5rem 1rem; cursor: pointer; }
+    .q { margin: 0.75rem 0; }
+  </style>
+</head>
+<body>
+  <h1>Bài 16 — Example lesson</h1>
+  <p>This file shows the three tracking patterns. Copy them into your real lessons.</p>
+
+  <!-- PATTERN 1: sections. Add data-lms-section="a-name" to each part
+       of the lesson. It's recorded as "viewed" when the student
+       scrolls it into view. -->
+  <section data-lms-section="vocabulary">
+    <h2>1. Từ vựng</h2>
+    <p>你好 (nǐ hǎo) — xin chào … (your vocabulary content here)</p>
+  </section>
+
+  <section data-lms-section="grammar">
+    <h2>2. Ngữ pháp</h2>
+    <p>(your grammar explanation here)</p>
+
+    <!-- PATTERN 2: simple "done" activities. Any element with
+         data-lms-done="a-name" records completion when clicked. -->
+    <button data-lms-done="listened-dialogue">🎧 Tôi đã nghe xong hội thoại</button>
+  </section>
+
+  <section data-lms-section="quiz">
+    <h2>3. Bài tập</h2>
+    <div class="q">1. "谢谢" nghĩa là gì?
+      <label><input type="radio" name="q1" value="a" /> Xin chào</label>
+      <label><input type="radio" name="q1" value="b" /> Cảm ơn</label>
+    </div>
+    <div class="q">2. "再见" nghĩa là gì?
+      <label><input type="radio" name="q2" value="a" /> Tạm biệt</label>
+      <label><input type="radio" name="q2" value="b" /> Xin lỗi</label>
+    </div>
+    <button id="submit-quiz">Nộp bài</button>
+    <p id="result"></p>
+  </section>
+
+  <script>
+    // PATTERN 3: scores. When your exercise finishes, call
+    // LMS.score("name", got, max). Works for quizzes, matching,
+    // drag-and-drop — anything where your code knows the score.
+    document.getElementById("submit-quiz").addEventListener("click", () => {
+      let score = 0;
+      if (document.querySelector('input[name="q1"]:checked')?.value === "b") score++;
+      if (document.querySelector('input[name="q2"]:checked')?.value === "a") score++;
+      document.getElementById("result").textContent = "Kết quả: " + score + "/2";
+      LMS.score("quiz-bai-16", score, 2);      // ← the one tracking line
+    });
+  </script>
+
+  <!-- THE TRACKER — these two lines go at the END of <body>
+       in every lesson you want tracked. Time on the lesson is
+       recorded automatically once these are present. -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://lqthongforwork.github.io/learninghub/tracker.js"></script>
+</body>
+</html>
